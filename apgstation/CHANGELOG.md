@@ -1,7 +1,8 @@
-# CHANGELOG for workstation
+# CHANGELOG for apgstation
 
-This file is used to list changes made in each version of workstation.
+This file is used to list changes made in each version of apgstation.
 
-## 0.1.0:
+## 1.1.0:
 
-* Initial release of workstation
+* Initial release of apgstation after revamp from agibbons
+	* homedir - added dot files, default directories
