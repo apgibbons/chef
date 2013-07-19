@@ -26,7 +26,7 @@ template "#{node['nagios']['state_dir']}/rw/process_file-diff" do
     owner "nagios"
     group "#{node['apache']['group']}"
     variables :nodes => nodes
-    notifies :run, resources(:execute => "process_file")
+    notifies :run, "execute[process_file]", :delayed
 end
 
 template "#{node['nagios']['state_dir']}/rw/process_file" do
