@@ -16,7 +16,7 @@ end
 
 directory "#{node['nagios']['state_dir']}/rw" do
     owner "nagios"
-    group "#{node['apache']['group']}"
+    group node['apache']['group']
     recursive true
     action :create
 end
@@ -24,7 +24,7 @@ end
 template "#{node['nagios']['state_dir']}/rw/process_file-diff" do
     source "process_file-diff.erb"
     owner "nagios"
-    group "#{node['apache']['group']}"
+    group node['apache']['group']
     variables :nodes => nodes
     notifies :run, "execute[process_file]", :delayed
 end
@@ -32,7 +32,7 @@ end
 template "#{node['nagios']['state_dir']}/rw/process_file" do
     source "process_file.erb"
     owner "nagios"
-    group "#{node['apache']['group']}"
+    group node['apache']['group']
     variables :nodes => nodes, :time => time
 end
 
