@@ -1,0 +1,10 @@
+<% @nodes.sort.each do |n| -%>
+<% next unless n.chef_environment == "production" or n.chef_environment == "pre-production" or n.chef_environment == "maintenance" -%>
+<% if n.chef_environment == "production" -%>
+ENABLE_HOST_NOTIFICATIONS;<%= n['fqdn'] %>
+ENABLE_HOST_SVC_NOTIFICATIONS;<%= n['fqdn'] %>
+<% else -%>
+DISABLE_HOST_NOTIFICATIONS;<%= n['fqdn'] %>
+DISABLE_HOST_SVC_NOTIFICATIONS;<%= n['fqdn'] %>
+<% end -%>
+<% end -%>
