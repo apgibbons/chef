@@ -14,8 +14,6 @@ execute "process_file" do
     action :nothing
 end
 
-# TODO: process the template once and just prefix the timestamp into the file in the above execute
-
 directory "#{node['nagios']['state_dir']}/rw" do
     owner "nagios"
     group "#{node['apache']['group']}"
