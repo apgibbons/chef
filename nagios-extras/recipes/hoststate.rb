@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: nagios
+# Cookbook Name:nagios
 # Recipe::hoststate
 #
 
@@ -13,8 +13,6 @@ execute "process_file" do
     command "#{node['nagios']['state_dir']}/rw/process_file.sh"
     action :nothing
 end
-
-# TODO: process the template once and just prefix the timestamp into the file in the above execute
 
 directory "#{node['nagios']['state_dir']}/rw" do
     owner "nagios"
