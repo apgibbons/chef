@@ -3,8 +3,12 @@
 # Recipe::hoststate
 #
 
-nodes = Array.new
-nodes = search(:node, "name:[* TO *]")
+if Chef::Config[:solo]
+  Chef::Log.warn("This recipe uses search. Chef Solo does not support search.")
+else
+    nodes = Array.new
+    nodes = search(:node, "hostname:[* TO *]")
+end
 
 t = Time.now
 time = t.to_i
