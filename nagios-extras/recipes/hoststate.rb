@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: nagios
+# Cookbook Name:nagios
 # Recipe::hoststate
 #
 
