@@ -7,7 +7,7 @@ if Chef::Config[:solo]
   Chef::Log.warn("This recipe uses search. Chef Solo does not support search.")
 else
     nodes = Array.new
-    nodes = search(:node, "hostname:[* TO *]")
+    nodes = search(:node, "hostname:[* TO *] AND chef_environment:production")
 end
 
 t = Time.now
