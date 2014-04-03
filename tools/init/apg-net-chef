@@ -1,0 +1,20 @@
+# apg-net-chef - setup network based on databag with Dell Service Tag or VM UUID
+#
+# This will kick off a chef-client run if /etc/chef/second-run.json is present, which 
+# is created during PXE install with the apg-bootstrap cookbook.
+#
+# This file is also included in the base Tickeapg AMI for building EC2 instances
+
+description "Tickeapg chef-client network config"
+
+start on startup
+
+script
+
+    /usr/bin/chef-client
+
+    rm /etc/init/apg-net-chef.conf /etc/chef/client.pem
+
+    /sbin/reboot
+
+end script
