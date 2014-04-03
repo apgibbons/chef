@@ -1,0 +1,40 @@
+#!/usr/bin/env python
+
+import os, uuid
+
+compute = raw_input("What compute instance will this run on? ").lower()
+compute = "%s.sc.tfly-internal.com" % (compute)
+hostname = raw_input("What is the hostname of the new virtual machine? ").lower()
+ram = input("How many GB of RAM should the instance have? ") * 1024
+cpu = raw_input("How many virtual cores? ")
+role = raw_input("Assign a role? ")
+ip = raw_input("Last octet of IP address? ")
+ip1 = "10.10.5.%s/24" % ip
+ip2 = "10.10.4.%s/24" % ip
+
+# Need an uppercase UUID since KVM converts it on launch (but not in virt-manager GUI), else the databag won't pull up
+uuid = str(uuid.uuid4()).upper()
+
+# Write out the JSON file for the new instance
+# TODO: use python JSON module
+filename = "/tmp/%s.json" % (uuid)
+
+file = open(filename,'w')
+file.write ("{\n\t\"id\": \"%s\",\n\t\"hostname\": \"%s\",\n\t\"addresses\": [ \"%s\", \"%s\" ],\n\t\"datacenter\": \"sc\",\n\t\"run_list\": \"role[%s]\",\n\t\"vmhost\": \"%s\"\n}\n" % (uuid, hostname, ip1, ip2, role, compute))
+file.close()
+
+knife = "knife data bag from file systems %s;mv %s ~/dev/chef-repo/data_bags/systems" % (filename,filename)
+os.system(knife)
+
+launch = "knife ssh name:%(compute1)s \"sudo cp /opt/libvirt/images/ubuntu12044.img /opt/libvirt/images/%(hostname1)s.img;sudo virt-install --name=%(hostname1)s --ram=%(ram1)s --vcpus=%(cpu1)s --hvm --disk path=/opt/libvirt/images/%(hostname1)s.img,size=50 -b br0 -b br1 --graphics vnc,listen=0.0.0.0 --noautoconsole --os-type=linux --os-variant=ubuntuprecise --uuid=%(uuid1)s --import\"\n" 
+
+launch = launch % { 'compute1': compute,
+                    'hostname1': hostname,
+                    'ram1': ram,
+                    'cpu1': cpu, 
+                    'uuid1': uuid }
+
+print("Launching new virtual machine...\n")
+
+os.system(launch)
+
